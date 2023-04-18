@@ -33,7 +33,6 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         holder.bind(differ.currentList[position])
-
     }
 
     inner class ArticleViewHolder(private val binding: ItemArticlePreviewBinding) :
@@ -41,7 +40,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
         fun bind(article: Article) {
             binding.article = article
-            setOnItemArticleClickListener {
+            binding.root.setOnClickListener {
                 onItemArticleClickListener?.let {
                     it(article)
                 }

@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shoppingkt.contants.Constant
 import com.jaroid.newskt.R
@@ -23,12 +26,16 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
     lateinit var newsViewModel: NewsViewModel
     lateinit var binding: FragmentSearchNewsBinding
     lateinit var newsAdapter: NewsAdapter
+    private lateinit var navHostFragment: NavHostFragment
+    lateinit var navController: NavController
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         newsViewModel = (activity as NewsActivity).newsViewModel
         binding = FragmentSearchNewsBinding.bind(view)
-
+        navHostFragment =
+            (activity as NewsActivity).supportFragmentManager.findFragmentById(R.id.newsNavHostFragment) as NavHostFragment
+        navController = navHostFragment.navController
         initView()
         newsViewModel.searchNewsResult.observe(viewLifecycleOwner) { response ->
             when (response) {
@@ -75,6 +82,18 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         binding.rvSearchNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(context)
+        }
+        articleOnClickListener()
+    }
+
+    private fun articleOnClickListener() {
+        newsAdapter.setOnItemArticleClickListener {
+            val bundle = Bundle().apply {
+                putSerializable("article", it)
+            }
+            navController.navigate(
+                R.id.action_searchNewsFragment_to_articleFragment, bundle
+            )
         }
     }
 
