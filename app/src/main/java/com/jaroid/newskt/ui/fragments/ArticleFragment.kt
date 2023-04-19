@@ -7,6 +7,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.jaroid.newskt.R
 import com.jaroid.newskt.databinding.FragmentArticleBinding
 import com.jaroid.newskt.models.Article
@@ -39,8 +40,13 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
             }
             binding.webView.apply {
                 webViewClient = client
-                loadUrl(it.url)
+                it.url?.let { it1 -> loadUrl(it1) }
             }
+
+            binding.fab.setOnClickListener {
+                newsViewModel.saveArticle(article)
+                Snackbar.make(view,"Add to list saved articles",Snackbar.LENGTH_SHORT).show()
             }
+        }
     }
 }

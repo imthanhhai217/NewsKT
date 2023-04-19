@@ -2,12 +2,13 @@ package com.jaroid.newskt.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.widget.AbsListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.shoppingkt.contants.Constant
 import com.jaroid.newskt.R
 import com.jaroid.newskt.adapters.NewsAdapter
 import com.jaroid.newskt.databinding.FragmentBreakingNewsBinding
@@ -33,7 +34,13 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                 is BaseResponse.Success -> {
                     hideProgressBar()
                     response.data?.let {
-                        updateData(response.data.articles)
+                        //toList() bởi vì diffUtil k hoạt động với mutableList
+                        updateData(response.data.articles.toList())
+                        val totalPage = response.data.totalResults / Constant.QUERY_PAGE_SIZE + 2
+                        isLastPage = newsViewModel.breakingNewPage == totalPage
+                        if (isLastPage) {
+                            binding.rvBreakingNews.setPadding(0, 0, 0, 0)
+                        }
                     }
                 }
 
@@ -53,10 +60,12 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     }
 
     private fun hideProgressBar() {
+        isLoading = false
         binding.paginationProgressBar.visibility = View.GONE
     }
 
     private fun showProgressBar() {
+        isLoading = true
         binding.paginationProgressBar.visibility = View.VISIBLE
     }
 
@@ -80,8 +89,42 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         binding.rvBreakingNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(context)
+            addOnScrollListener(this@BreakingNewsFragment.scrollListener)
         }
 
         articleOnClickListener()
+    }
+
+    var isLoading = false
+    var isLastPage = false
+    var isScrolling = false
+
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+            val childCount = layoutManager.childCount
+            val itemCount = layoutManager.itemCount
+
+            val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
+            val isAtLastItem = firstVisibleItem + childCount >= itemCount
+            val isNotAtBeginning = firstVisibleItem >= 0
+            val isTotalMoreThanVisible = itemCount >= Constant.QUERY_PAGE_SIZE
+            val shouldPaginate =
+                isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning && isTotalMoreThanVisible && isScrolling
+
+            if (shouldPaginate) {
+                newsViewModel.getBreakingNews("us")
+                isScrolling = false
+            }
+        }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                isScrolling = true
+            }
+        }
     }
 }
