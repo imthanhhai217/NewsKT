@@ -17,32 +17,30 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
 
     lateinit var newsViewModel: NewsViewModel
     lateinit var binding: FragmentArticleBinding
+    private val args: ArticleFragmentArgs by navArgs()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         newsViewModel = (activity as NewsActivity).newsViewModel
         binding = FragmentArticleBinding.bind(view)
 
-        var article: Article?
+        var article: Article? = args.article
 
-        arguments?.let { it ->
-            article = it.getSerializable("article") as Article?
-            article?.let {
-                val client = object : WebViewClient() {
-                    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                        super.onPageStarted(view, url, favicon)
-                        binding.llLoading.visibility = View.VISIBLE
-                    }
-
-                    override fun onPageFinished(view: WebView?, url: String?) {
-                        super.onPageFinished(view, url)
-                        binding.llLoading.visibility = View.GONE
-                    }
+        article?.let {
+            val client = object : WebViewClient() {
+                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                    super.onPageStarted(view, url, favicon)
+                    binding.llLoading.visibility = View.VISIBLE
                 }
-                binding.webView.apply {
-                    webViewClient = client
-                    loadUrl(it.url)
+
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    super.onPageFinished(view, url)
+                    binding.llLoading.visibility = View.GONE
                 }
             }
-        }
+            binding.webView.apply {
+                webViewClient = client
+                loadUrl(it.url)
+            }
+            }
     }
 }

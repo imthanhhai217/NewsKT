@@ -39,10 +39,12 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(article: Article) {
-            binding.article = article
-            binding.root.setOnClickListener {
-                onItemArticleClickListener?.let {
-                    it(article)
+            article?.let {
+                binding.article = it
+                binding.root.setOnClickListener {
+                    onItemArticleClickListener?.let {
+                        it(article)
+                    }
                 }
             }
         }
