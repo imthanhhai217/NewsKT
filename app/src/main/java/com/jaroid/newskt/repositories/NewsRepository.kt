@@ -4,7 +4,7 @@ import com.jaroid.newskt.api.RetrofitClient
 import com.jaroid.newskt.db.ArticleDatabase
 import com.jaroid.newskt.models.Article
 
-class NewsRepository(val articleDatabase: ArticleDatabase) {
+class NewsRepository(private val articleDatabase: ArticleDatabase) {
 
     suspend fun getBreakingNews(countryCode: String, pageNumber: Int) =
         RetrofitClient.getNewsAPI.getBreakingNews(countryCode, pageNumber)

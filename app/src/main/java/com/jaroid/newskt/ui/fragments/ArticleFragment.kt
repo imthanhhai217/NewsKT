@@ -12,7 +12,7 @@ import com.jaroid.newskt.R
 import com.jaroid.newskt.databinding.FragmentArticleBinding
 import com.jaroid.newskt.models.Article
 import com.jaroid.newskt.ui.NewsActivity
-import com.jaroid.newskt.ui.NewsViewModel
+import com.jaroid.newskt.viewmodels.NewsViewModel
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
 

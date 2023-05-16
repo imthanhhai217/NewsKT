@@ -1,4 +1,4 @@
-package com.jaroid.newskt.ui
+package com.jaroid.newskt.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

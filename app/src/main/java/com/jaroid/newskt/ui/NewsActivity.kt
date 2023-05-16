@@ -3,13 +3,14 @@ package com.jaroid.newskt.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.jaroid.newskt.R
 import com.jaroid.newskt.databinding.ActivityNewsBinding
 import com.jaroid.newskt.db.ArticleDatabase
 import com.jaroid.newskt.repositories.NewsRepository
+import com.jaroid.newskt.viewmodels.NewViewModelProviderFactory
+import com.jaroid.newskt.viewmodels.NewsViewModel
 
 class NewsActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.jaroid.newskt.utils
+package com.jaroid.newskt.`object`
 
 sealed class BaseResponse<T>(
     val data: T? = null, val message: String? = null
