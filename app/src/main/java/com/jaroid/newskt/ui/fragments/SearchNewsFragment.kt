@@ -15,8 +15,8 @@ import com.jaroid.newskt.adapters.NewsAdapter
 import com.jaroid.newskt.databinding.FragmentSearchNewsBinding
 import com.jaroid.newskt.models.Article
 import com.jaroid.newskt.ui.NewsActivity
-import com.jaroid.newskt.viewmodels.NewsViewModel
 import com.jaroid.newskt.`object`.BaseResponse
+import com.jaroid.newskt.ui.NewsViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay

@@ -14,8 +14,8 @@ import com.jaroid.newskt.adapters.NewsAdapter
 import com.jaroid.newskt.databinding.FragmentBreakingNewsBinding
 import com.jaroid.newskt.models.Article
 import com.jaroid.newskt.ui.NewsActivity
-import com.jaroid.newskt.viewmodels.NewsViewModel
 import com.jaroid.newskt.`object`.BaseResponse
+import com.jaroid.newskt.ui.NewsViewModel
 
 class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 

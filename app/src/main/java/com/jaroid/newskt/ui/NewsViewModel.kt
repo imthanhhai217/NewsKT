@@ -11,8 +11,8 @@ import androidx.lifecycle.viewModelScope
 import com.jaroid.newskt.MyApplication
 import com.jaroid.newskt.models.Article
 import com.jaroid.newskt.models.NewsResponse
+import com.jaroid.newskt.`object`.BaseResponse
 import com.jaroid.newskt.repositories.NewsRepository
-import com.jaroid.newskt.utils.BaseResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
